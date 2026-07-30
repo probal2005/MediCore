@@ -1,0 +1,20 @@
+const Helpers = {
+  generateId: () => 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 9),
+  generatePatientId: () => 'PT' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase(),
+  generateDoctorId: () => 'DR' + Date.now().toString(36).toUpperCase().substr(0, 6),
+  generateBillNo: () => 'BILL-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase(),
+  getInitials: (name) => name.split(' ').map(n => n[0]).join('').toUpperCase().substr(0, 2),
+  getTimeAgo: (date) => { const diff = Date.now() - new Date(date).getTime(); const mins = Math.floor(diff / 60000); if (mins < 1) return 'Just now'; if (mins < 60) return mins + 'm ago'; const hrs = Math.floor(mins / 60); if (hrs < 24) return hrs + 'h ago'; const days = Math.floor(hrs / 24); return days + 'd ago'; },
+  formatDate: (date) => new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+  formatTime: (date) => new Date(date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+  debounce: (fn, delay = 300) => { let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay); }; },
+  truncate: (str, len = 50) => str.length > len ? str.substr(0, len) + '...' : str,
+  randomBetween: (min, max) => Math.floor(Math.random() * (max - min + 1)) + min,
+  getStatusColor: (status) => { const map = { active: 'success', inactive: 'danger', pending: 'warning', completed: 'success', cancelled: 'danger', confirmed: 'info', discharged: 'info', admitted: 'warning', available: 'success', occupied: 'danger', maintenance: 'warning' }; return map[status] || 'primary'; },
+  getRandomColor: () => { const colors = ['#4f46e5','#0ea5e9','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6']; return colors[Math.floor(Math.random() * colors.length)]; },
+  getAvatarColor: (name) => { const colors = ['#4f46e5','#0ea5e9','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6']; let hash = 0; for (let i = 0; i < name.length; i++) { hash = name.charCodeAt(i) + ((hash << 5) - hash); } return colors[Math.abs(hash) % colors.length]; },
+  isEmpty: (obj) => !obj || (Array.isArray(obj) ? obj.length === 0 : Object.keys(obj).length === 0),
+  clone: (obj) => JSON.parse(JSON.stringify(obj)),
+  formatCurrency: (amount) => '$' + Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+  formatPhone: (phone) => { const cleaned = phone.replace(/\D/g, ''); if (cleaned.length === 10) return '(' + cleaned.substr(0,3) + ') ' + cleaned.substr(3,3) + '-' + cleaned.substr(6); return phone; }
+};
